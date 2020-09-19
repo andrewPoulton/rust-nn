@@ -18,7 +18,7 @@ pub fn mmul_()->Tensor{
 
 pub fn linlayer()->Tensor{
     let v = Tensor::uniform(&[10, 5], 0.0, 1.0).unwrap();
-    let mut l = Linear::new(5, 1, NonLinearity::Sigmoid);
+    let mut l = Linear::new(5, 1);
     l.forward(&v).unwrap()
 }
 
@@ -95,7 +95,7 @@ mod tests {
     #[test]
     fn linear_test(){
         let mut l = Linear::new(4, 5);
-        let mut new_weight = Tensor::new((0u8..20).map(f32::from).collect(), &[4,5])
+        let mut new_weight = Tensor::new((0u8..20).map(f32::from).collect(), &[4,5]);
         let t = Tensor::uniform(&[10, 2], -1.0, 1.0).unwrap();
         println!("l out is {}", l.forward(&t).unwrap());
         l.init_weight(0.0, 2.0);
