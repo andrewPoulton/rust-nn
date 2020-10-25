@@ -4,11 +4,13 @@ pub mod linear_layer;
 pub mod activations;
 pub mod loss;
 pub mod grad;
+pub mod nn;
 pub use activations::*;
 pub use linalg::*;
 pub use linear_layer::*;
 pub use loss::*;
 pub use grad::Module;
+pub use nn::FFNet;
 
 pub fn mmul_()->Tensor{
     let v1 = Tensor::uniform(&[5,10], 0.0, 1.0).unwrap();
@@ -129,6 +131,11 @@ mod tests {
         println!("Tensor transposed is {}", preds);
         let preds = preds.transpose();
         println!("Tensor transposed transposed is {}", preds);
+    }
+
+    #[test]
+    fn ff_test(){
+        
     }
 
 }

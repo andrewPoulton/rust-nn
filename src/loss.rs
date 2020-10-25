@@ -1,5 +1,6 @@
 use crate::linalg::*;
 use crate::errors::*;
+use crate::grad::Module;
 
 #[derive(Debug, Clone)]
 pub struct Loss {

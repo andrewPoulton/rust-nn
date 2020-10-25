@@ -2,12 +2,13 @@ use crate::linalg::*;
 use crate::errors::TensorError;
 use crate::grad::Module;
 
-
+#[derive(Debug, Copy, Clone)]
 pub enum NonLinearity{
     ReLU,
     Tanh, 
     Sigmoid
 }
+#[derive(Debug,Clone)]
 pub struct Activation{
     // pub input: Option<Tensor>,
     pub output: Option<Tensor>,
