@@ -12,7 +12,7 @@ pub struct FFNet {
 impl FFNet {
     pub fn new(dims: &[usize], hidden_nonlinearity: NonLinearity)->FFNet{
         let mut layers = vec![Linear::new(2, dims[0])];
-        let mut activations: Vec<Activation> = vec![];
+        let mut activations: Vec<Activation> = Vec::<Activation>::with_capacity(dims[1..].len());
         for i in 1..dims.len() {
             layers.push(Linear::new(dims[i-1], dims[i]));
             activations.push(Activation::new(hidden_nonlinearity));
