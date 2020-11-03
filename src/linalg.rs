@@ -150,7 +150,7 @@ impl Tensor{
             let new_data = self.data.iter().zip(other.data.iter()).map(|(x,y)| x+y).collect();
             Tensor::new(new_data, &self.shape[0..])
         } else{
-            Err(TensorError::GradError)
+            Err(TensorError::AddError)
         }
     }
 

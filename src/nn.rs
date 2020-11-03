@@ -20,6 +20,10 @@ impl FFNet {
         activations.push(Activation::new(NonLinearity::Sigmoid));
         FFNet { layers, activations }
     }
+
+    pub fn init_weight(&mut self, mean: f32, std: f32){
+        self.layers.iter_mut().map(|layer| layer.init_weight(mean, std));
+    }
 }
 
 impl Module for FFNet {

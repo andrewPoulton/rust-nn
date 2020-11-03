@@ -103,16 +103,25 @@ mod tests {
         l.init_weight(0.0, 2.0);
         println!("l newly init out is {}", l.forward(&t).unwrap());
     }
-
+    
     #[test]
     fn mse_test(){
         let targets = Tensor::ones(&[5]);
         let preds = Tensor::from_vec(vec![0.0,1.0,2.0,3.0,4.0]).unwrap();
         let l = mse_loss(&preds, &targets).unwrap();
-        println!("\nloss is {}\n", l.loss);
-        println!("\nloss grad is {}\n", l.loss_grad)
+        println!("\nMSE loss is {}\n", l.loss);
+        println!("\nMSE loss grad is {}\n", l.loss_grad)
     }
-
+    
+    #[test]
+    fn bce_test(){
+        let targets = Tensor::from_vec(vec![0.0,1.0,1.0]).unwrap();
+        let preds = Tensor::from_vec(vec![0.01, 0.5, 0.2]).unwrap();
+        let l = bce_loss(&preds, &targets).unwrap();
+        println!("\nBCE loss is {}\n", l.loss);
+        println!("\nBCE loss grad is {}\n", l.loss_grad)
+    }
+    
     #[test]
     fn activation_backwards_test(){
         let preds = Tensor::from_vec(vec![0.0,-1.0,2.0,-3.0,4.0]).unwrap();
@@ -134,10 +143,23 @@ mod tests {
     }
 
     #[test]
-    fn ff_test(){
-        
+    fn ff_forward_test(){
+        let mut nn = FFNet::new(&[5,5,2], NonLinearity::Tanh);
+        nn.init_weight(0.0, 1.0);
+        println!("Linear 1 is: {}", &nn.layers[0]);
+        println!("Linear 2 is: {}", &nn.layers[1]);
+        println!("Linear 3 is: {}", &nn.layers[2]);
+        let input = Tensor::from_vec(vec![0.2, 0.7]).unwrap().transpose();
+        println!("{}", &input);
+        let output = nn.layers[0].forward(&input).unwrap_err();
+        println!("Output is {}", output);
     }
 
+    #[test]
+    fn lin_test(){
+        let mut layer = Linear::new(2, 5);
+        let input = Tensor::from_vec(vec![0.2, 0.7])?;
+    }
 }
 
 

@@ -13,6 +13,7 @@ pub enum TensorError {
     MatmulShapeError,
     ShapeError,
     GradError,
+    AddError,
     NoForwardError,
 }
 
@@ -32,6 +33,7 @@ impl fmt::Display for TensorError {
             ),
             TensorError::ShapeError => write!(f, "Tensors must have the same shape in all dims except the last dimension"),
             TensorError::GradError => write!(f, "Error while computing .backward()"),
+            TensorError::AddError => write!(f, "Shape error in add_"),
             TensorError::NoForwardError => write!(f, "No forward pass yet made"),
         }
     }

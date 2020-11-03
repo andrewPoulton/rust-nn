@@ -1,10 +1,11 @@
 use crate::{linalg::*, errors::TensorError};
 use crate::activations::*;
 use crate::grad::Module;
+use std::fmt;
 
 
 
-
+#[derive(Debug, Clone)]
 pub struct Linear{
     pub weight: Tensor,
     pub bias: Tensor,
@@ -14,6 +15,14 @@ pub struct Linear{
     pub input: Option<Tensor>,
 }
 
+impl fmt::Display for Linear {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", format!(
+            "\nWeight: {:?} \nBias: {:?}",
+            self.weight, self.bias))
+    }
+}
+
 impl Linear{
     pub fn new(in_dim: usize, out_dim: usize)->Self{
         let bias = Tensor::zeros(&[out_dim, 1]);
@@ -21,7 +30,7 @@ impl Linear{
         let bias_grad = Tensor::zeros_like(&bias);
         let weight_grad = Tensor::zeros_like(&weight);
         Linear{
-            weight: weight.transpose(),
+            weight: weight,
             bias,
             weight_grad,
             bias_grad,
@@ -52,9 +61,10 @@ impl Module for Linear{
     fn forward(&mut self, input: &Tensor)->Result<Tensor, TensorError> {
         self.input = Some(input.to_owned());
         if input.shape[1] == self.weight.shape[0]{
-            let logits = input.mmul(&self.weight).unwrap().add(&self.bias);
-            self.output = Some(logits.to_owned().unwrap());
-            logits
+            let logits = input.mmul(&self.weight)?;
+            let logits = logits.add(&self.bias)?;
+            self.output = Some(logits.to_owned());
+            Ok(logits)
         } else {
             Err(TensorError::MatmulShapeError)
         }
